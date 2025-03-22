@@ -17,7 +17,7 @@ class _CarSelectScreenState extends State<CarSelectScreen>
   AuraColorPalette? _colorPalette;
 
   // Style and effect settings
-  AuraStyle _auraStyle = AuraStyle.BLOB;
+  AuraStyle _auraStyle = AuraStyle.blob;
   double _animationValue = 0.7;
   bool _useCustomBlur = false;
   double _blurStrength = 20.0;

@@ -55,7 +55,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
   double _blurStrengthY = 20.0;
 
   // Aura style settings
-  AuraStyle _auraStyle = AuraStyle.GRADIENT;
+  AuraStyle _auraStyle = AuraStyle.gradient;
 
   // Animation value (0.0 ~ 1.0)
   double _animationValue = 0.7;

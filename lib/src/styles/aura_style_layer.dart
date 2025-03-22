@@ -351,7 +351,7 @@ abstract class AuraStyleLayer extends StatelessWidget {
     double variety = 0.5,
   }) {
     switch (style) {
-      case AuraStyle.BLOB:
+      case AuraStyle.blob:
         return BlobStyleLayer(
           colorPalette: colorPalette,
           animationController: animationController,
@@ -364,7 +364,7 @@ abstract class AuraStyleLayer extends StatelessWidget {
           containerSize: containerSize,
           variety: variety,
         );
-      case AuraStyle.GRADIENT:
+      case AuraStyle.gradient:
         return GradientStyleLayer(
           colorPalette: colorPalette,
           animationController: animationController,
@@ -377,7 +377,7 @@ abstract class AuraStyleLayer extends StatelessWidget {
           containerSize: containerSize,
           variety: variety,
         );
-      case AuraStyle.SUNRAY: // New style
+      case AuraStyle.sunray: // New style
         return SunrayStyleLayer(
           colorPalette: colorPalette,
           animationController: animationController,

@@ -17,7 +17,7 @@ class _WatchShowcaseScreenState extends State<WatchShowcaseScreen>
   AuraColorPalette? _colorPalette;
 
   // Style and effect settings
-  AuraStyle _auraStyle = AuraStyle.SUNRAY; // Default to sunray style
+  AuraStyle _auraStyle = AuraStyle.sunray; // Default to sunray style
   double _animationValue = 0.7;
   bool _useCustomBlur = false;
   double _blurStrength = 15.0;
@@ -178,7 +178,6 @@ class _WatchShowcaseScreenState extends State<WatchShowcaseScreen>
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final bottomPadding = MediaQuery.of(context).padding.bottom;
-    final topPadding = MediaQuery.of(context).padding.top;
 
     return Scaffold(
       extendBody: true, // Extend body to bottom navigation area

@@ -24,11 +24,11 @@ part 'src/adaptive_aura_container.dart';
 // Define and export aura style enum
 /// Aura style enum
 enum AuraStyle {
-  BLOB,
+  blob,
 
-  GRADIENT,
+  gradient,
 
-  SUNRAY,
+  sunray,
 }
 
 /// A Calculator.

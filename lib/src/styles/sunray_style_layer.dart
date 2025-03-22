@@ -13,9 +13,6 @@ class SunrayStyleLayer extends AuraStyleLayer {
   @override
   final Size containerSize;
 
-  /// Random generator
-  final _random = math.Random();
-
   /// Constructor
   SunrayStyleLayer({
     required super.colorPalette,
@@ -138,7 +135,6 @@ class _SunrayPainter extends CustomPainter {
   final double variety;
   final double blurStrengthX;
   final double blurStrengthY;
-  final _random = math.Random(42); // Fixed seed for consistent patterns
 
   _SunrayPainter({
     required this.colorPalette,
@@ -285,8 +281,8 @@ class _SunrayPainter extends CustomPainter {
                     : 1.2;
 
     // Base opacity values (overall brighter)
-    final baseOpacity = 0.5;
-    final tailOpacity = 0.2;
+    const baseOpacity = 0.5;
+    const tailOpacity = 0.2;
 
     // Create gradient (bright and vibrant colors)
     final Paint fanPaint = Paint()

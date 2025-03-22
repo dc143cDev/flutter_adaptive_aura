@@ -67,7 +67,7 @@ class AdaptiveAuraContainer extends StatefulWidget {
     this.blurStrengthY,
     this.blurLayerOpacity = 0.1,
     this.colorIntensity = 0.7,
-    this.auraStyle = AuraStyle.BLOB,
+    this.auraStyle = AuraStyle.blob,
     this.onPaletteGenerated,
     this.enableLogging = true,
     this.animationValue = 0.0,

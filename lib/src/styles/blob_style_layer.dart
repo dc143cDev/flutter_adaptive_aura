@@ -2,7 +2,6 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'aura_style_layer.dart';
-import '../models/aura_color_palette.dart';
 
 /// Global class for storing random values
 /// This allows random values to persist even when the widget rebuilds
@@ -52,12 +51,6 @@ class _BlobStyleConfig {
 
   /// Maximum small point count
   static const int maxSmallBlobCount = 200;
-
-  /// Default blob count
-  static const int defaultBlobCount = 18;
-
-  /// Default small point count
-  static const int defaultSmallBlobCount = 20;
 
   void _initialize() {
     if (_isInitialized) return;

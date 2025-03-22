@@ -284,13 +284,13 @@ class _ControlPanelState extends State<ControlPanel> {
                       .map<DropdownMenuItem<AuraStyle>>((AuraStyle value) {
                     String displayName = '';
                     switch (value) {
-                      case AuraStyle.BLOB:
+                      case AuraStyle.blob:
                         displayName = 'Blob Style';
                         break;
-                      case AuraStyle.GRADIENT:
+                      case AuraStyle.gradient:
                         displayName = 'Gradient Style';
                         break;
-                      case AuraStyle.SUNRAY:
+                      case AuraStyle.sunray:
                         displayName = 'Sunray Style';
                         break;
                     }

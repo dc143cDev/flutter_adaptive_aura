@@ -1,8 +1,8 @@
 name: adaptive_aura
-description: "A new Flutter package project."
+description: "A Flutter package for creating beautiful, dynamic aura effects that adapt to the color of images."
 version: 0.0.1
-homepage:
-
+homepage: https://github.com/dc143cDev/flutter_adaptive_aura
+repository: https://github.com/dc143cDev/flutter_adaptive_aura
 environment:
   sdk: ^3.5.1
   flutter: ">=1.17.0"
@@ -21,9 +21,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  # 테스트용 이미지 에셋 추가
-  assets:
-    - assets/images/
+  # Test image assets
+  # assets:
+  #   - assets/images/
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

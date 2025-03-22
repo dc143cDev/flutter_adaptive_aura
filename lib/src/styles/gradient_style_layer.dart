@@ -44,16 +44,16 @@ class GradientStyleLayer extends AuraStyleLayer {
   final Size containerSize;
 
   /// Gradient points cache
-  List<_GradientPoint>? _gradientPointsCache;
+  late final List<_GradientPoint>? _gradientPointsCache;
 
   /// Last used container size
-  Size? _lastContainerSize;
+  late final Size? _lastContainerSize;
 
   /// Last used variety value
-  double? _lastVariety;
+  late final double? _lastVariety;
 
   /// Last used animation value (rounded value)
-  double? _lastAnimationValue;
+  late final double? _lastAnimationValue;
 
   /// Random generator
   final _random = math.Random();
@@ -529,9 +529,6 @@ class GradientStyleLayer extends AuraStyleLayer {
 
   /// Initialize gradient
   void _initialize() {
-    // Generate cache key
-    final cacheKey = _getCacheKey();
-
     // Only regenerate gradient when container size, variety value, or animation value changes significantly
     if (_gradientPointsCache == null ||
         _lastContainerSize != containerSize ||
