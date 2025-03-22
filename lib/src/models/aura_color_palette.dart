@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// 아우라 색상 팔레트 클래스
+/// Aura color palette class
 class AuraColorPalette {
-  /// 주요 색상
+  /// Primary color
   final Color primary;
 
-  /// 보조 색상
+  /// Secondary color
   final Color secondary;
 
-  /// 세 번째 색상
+  /// Tertiary color
   final Color tertiary;
 
-  /// 밝은 색상
+  /// Light color
   final Color light;
 
-  /// 어두운 색상
+  /// Dark color
   final Color dark;
 
-  /// 아우라 색상 팔레트 생성자
+  /// Aura color palette constructor
   const AuraColorPalette({
     required this.primary,
     required this.secondary,
@@ -26,7 +26,7 @@ class AuraColorPalette {
     required this.dark,
   });
 
-  /// 기본 팔레트 생성
+  /// Create default palette
   factory AuraColorPalette.defaultPalette() {
     return const AuraColorPalette(
       primary: Color(0xFF6200EA),
@@ -37,21 +37,21 @@ class AuraColorPalette {
     );
   }
 
-  /// 단일 색상에서 팔레트 생성
+  /// Create palette from single color
   factory AuraColorPalette.fromColor(Color color) {
     final HSLColor hsl = HSLColor.fromColor(color);
 
-    // 보조 색상 (색상환에서 60도 이동)
+    // Secondary color (60 degrees in hue space)
     final HSLColor secondaryHsl = hsl.withHue((hsl.hue + 60) % 360);
 
-    // 세 번째 색상 (색상환에서 180도 이동)
+    // Tertiary color (180 degrees in hue space)
     final HSLColor tertiaryHsl = hsl.withHue((hsl.hue + 180) % 360);
 
-    // 밝은 색상
+    // Light color
     final HSLColor lightHsl =
         hsl.withLightness((hsl.lightness + 0.2).clamp(0.0, 1.0));
 
-    // 어두운 색상
+    // Dark color
     final HSLColor darkHsl =
         hsl.withLightness((hsl.lightness - 0.2).clamp(0.0, 1.0));
 
@@ -64,7 +64,7 @@ class AuraColorPalette {
     );
   }
 
-  /// 기본 배경 그라데이션 생성
+  /// Create default background gradient
   LinearGradient createGradient() {
     return LinearGradient(
       begin: Alignment.topLeft,
@@ -77,7 +77,7 @@ class AuraColorPalette {
     );
   }
 
-  /// 커스텀 배경 그라데이션 생성
+  /// Create custom background gradient
   LinearGradient createCustomGradient({
     AlignmentGeometry begin = Alignment.topLeft,
     AlignmentGeometry end = Alignment.bottomRight,
@@ -91,7 +91,7 @@ class AuraColorPalette {
     );
   }
 
-  /// 어두운 배경 그라데이션 생성
+  /// Create dark background gradient
   LinearGradient createDarkGradient({
     AlignmentGeometry begin = Alignment.topLeft,
     AlignmentGeometry end = Alignment.bottomRight,
@@ -105,7 +105,7 @@ class AuraColorPalette {
     );
   }
 
-  /// 색상을 어둡게 만듭니다.
+  /// Darken color
   Color _darkenColor(Color color, double amount) {
     final HSLColor hsl = HSLColor.fromColor(color);
     return hsl
