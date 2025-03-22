@@ -61,15 +61,15 @@ AdaptiveAuraContainer(
 
 ~~~dart
 AdaptiveAuraContainer(
-  image: AssetImage('assets/images/album.jpg'), // 이미지 입력 시 이미지의 컬러 코드를 추출하여 아우라에 적용됩니다.
-  auraStyle: AuraStyle.gradient, // 아우라의 스타일 선택. (gradient, blob, sunray)
-  variety: 0.7, // 아우라 레이어의 다양성을 조절합니다. 그라디언트를 예시로 들면, 색상이 퍼지는 영역이 더욱 광범위해짐.
-  colorIntensity: 0.8, 
-  blurStrength: 15.0,
-  blurLayerOpacity: 0.1,
-  animationValue: 0.8,
-  animationDuration: Duration(milliseconds: 800),
-  colorTransitionDuration: Duration(milliseconds: 300),
+  image: AssetImage('assets/images/album.jpg'), // When image is provided, colors are extracted from it and applied to the aura
+  auraStyle: AuraStyle.gradient, // Select aura style (gradient, blob, sunray)
+  variety: 0.7, // Adjusts the diversity of aura layers. For gradients, this makes the color spread more extensive
+  colorIntensity: 0.8, // Controls how vibrant and opaque the colors appear in the effect
+  blurStrength: 15.0, // Sets the blur intensity for a softer look
+  blurLayerOpacity: 0.1, // Controls the opacity of the blur overlay for additional depth
+  animationValue: 0.8, // Controls the animation intensity/strength (0.0-1.0)
+  animationDuration: Duration(milliseconds: 800), // How long animations take to complete
+  colorTransitionDuration: Duration(milliseconds: 300), // How long color transitions take when changing images
   onPaletteGenerated: (palette) {
     // Do something with the extracted palette
     print('Primary color: ${palette.primary}');
