@@ -2,7 +2,7 @@
 
 # Adaptive Aura
 <p align="center">
-<img src="screenshots/adaptive_aura.jpeg" width="800" alt="title"/>
+<img src="screenshots/adaptive_aura.jpeg" alt="title"/>
 </p>
 Adaptive Aura is a versatile Flutter package that creates beautiful, dynamic background effects that adapt to the colors of your images or custom color palettes. It provides an elegant container component that automatically extracts colors from images and applies visually striking aura effects, perfect for music players, image galleries, or any app that needs a touch of visual elegance.
 
