@@ -1,39 +1,47 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+# Adaptive Aura
+<p align="center">
+<img src="screenshots/adaptive_aura_title.jpeg" width="800" alt="Adaptive Aura"/>
+</p>
+Adaptive Aura is a versatile Flutter package that creates beautiful, dynamic background effects that adapt to the colors of your images or custom color palettes. It provides an elegant container component that automatically extracts colors from images and applies visually striking aura effects, perfect for music players, image galleries, or any app that needs a touch of visual elegance.
 
 ## Features
+ - Automatic color extraction from images to create harmonious visual effects
+ - Three distinct aura styles: Gradient, Blob, and Sunray
+ - Customizable parameters for animation speed, blur intensity, variety, and more
+ - Smooth transitions between different images and color palettes
+ - Highly optimized for performance with minimal impact on UI responsiveness
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+# Styles
+## Gradient Style
+A soft, flowing gradient effect inspired by Apple Music's design language, creating a subtle yet captivating background.
+<p align="center">
+<img src="screenshots/gradient_car.jpeg" width="250" alt="Gradient Car"/>
+<img src="screenshots/gradient_music.jpeg" width="250" alt="Gradient Music"/>
+<img src="screenshots/gradient_watch.jpeg" width="250" alt="Gradient Watch"/>
+</p>
 
-## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Blob Style
+Organic, fluid blob animations that react to user interaction and create a lively, playful background.
+<p align="center">
+<img src="screenshots/blob_car.jpeg" width="250" alt="Blob Car"/>
+<img src="screenshots/blob_music.jpeg" width="250" alt="Blob Music"/>
+<img src="screenshots/blob_watch.jpeg" width="250" alt="Blob Watch"/>
+</p>
 
-## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Sunray Style
+Dynamic, radial light rays that emanate from the center, creating a vibrant and energetic visual experience.
+<p align="center">
+<img src="screenshots/sunray_car.jpeg" width="250" alt="Sunray Car"/>
+<img src="screenshots/sunray_music.jpeg" width="250" alt="Sunray Music"/>
+<img src="screenshots/sunray_watch.jpeg" width="250" alt="Sunray Watch"/>
+</p>
 
-```dart
-const like = 'sample';
-```
+# Getting Started
+Add this to your package's pubspec.yaml file:
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+~~~
+dependencies:
+  adaptive_aura: ^0.0.1
+~~~
