@@ -1,60 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:adaptive_aura/adaptive_aura.dart';
 
-/// 앱 설정을 조정할 수 있는 컨트롤 패널 위젯
+/// Control panel widget for adjusting app settings
 class ControlPanel extends StatefulWidget {
-  /// 현재 애니메이션 값 (0.0 ~ 1.0)
+  /// Current animation value (0.0 ~ 1.0)
   final double animationValue;
 
-  /// 현재 아우라 스타일
+  /// Current aura style
   final AuraStyle auraStyle;
 
-  /// 커스텀 블러 사용 여부
+  /// Whether to use custom blur
   final bool useCustomBlur;
 
-  /// 블러 강도 (단일 값)
+  /// Blur strength (single value)
   final double blurStrength;
 
-  /// X축 블러 강도
+  /// X-axis blur strength
   final double? blurStrengthX;
 
-  /// Y축 블러 강도
+  /// Y-axis blur strength
   final double? blurStrengthY;
 
-  /// 블러 레이어 불투명도
+  /// Blur layer opacity
   final double blurLayerOpacity;
 
-  /// 다양성 값 (0.0 ~ 1.0)
+  /// Variety value (0.0 ~ 1.0)
   final double variety;
 
-  /// 현재 색상 팔레트
+  /// Current color palette
   final AuraColorPalette? currentPalette;
 
-  /// 애니메이션 값 변경 콜백
+  /// Animation value change callback
   final ValueChanged<double> onAnimationValueChanged;
 
-  /// 아우라 스타일 변경 콜백
+  /// Aura style change callback
   final ValueChanged<AuraStyle> onAuraStyleChanged;
 
-  /// 커스텀 블러 사용 여부 변경 콜백
+  /// Custom blur usage change callback
   final ValueChanged<bool> onUseCustomBlurChanged;
 
-  /// 블러 강도 변경 콜백
+  /// Blur strength change callback
   final ValueChanged<double> onBlurStrengthChanged;
 
-  /// X축 블러 강도 변경 콜백
+  /// X-axis blur strength change callback
   final ValueChanged<double> onBlurStrengthXChanged;
 
-  /// Y축 블러 강도 변경 콜백
+  /// Y-axis blur strength change callback
   final ValueChanged<double> onBlurStrengthYChanged;
 
-  /// 블러 레이어 불투명도 변경 콜백
+  /// Blur layer opacity change callback
   final ValueChanged<double> onBlurLayerOpacityChanged;
 
-  /// 다양성 값 변경 콜백
+  /// Variety value change callback
   final ValueChanged<double> onVarietyChanged;
 
-  /// 생성자
+  /// Constructor
   const ControlPanel({
     super.key,
     required this.animationValue,
@@ -81,7 +81,7 @@ class ControlPanel extends StatefulWidget {
 }
 
 class _ControlPanelState extends State<ControlPanel> {
-  // 로컬 상태 변수들
+  // Local state variables
   late double _animationValue;
   late AuraStyle _auraStyle;
   late bool _useCustomBlur;
@@ -94,13 +94,13 @@ class _ControlPanelState extends State<ControlPanel> {
   @override
   void initState() {
     super.initState();
-    // 초기값 설정
+    // Set initial values
     _animationValue = widget.animationValue;
     _auraStyle = widget.auraStyle;
     _useCustomBlur = widget.useCustomBlur;
     _blurStrength = widget.blurStrength;
-    _blurStrengthX = widget.blurStrengthX ?? 20.0; // 기본값 설정
-    _blurStrengthY = widget.blurStrengthY ?? 20.0; // 기본값 설정
+    _blurStrengthX = widget.blurStrengthX ?? 20.0; // Set default value
+    _blurStrengthY = widget.blurStrengthY ?? 20.0; // Set default value
     _blurLayerOpacity = widget.blurLayerOpacity;
     _variety = widget.variety;
   }
@@ -108,7 +108,7 @@ class _ControlPanelState extends State<ControlPanel> {
   @override
   void didUpdateWidget(ControlPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // 위젯이 업데이트되면 값 갱신
+    // Update values when widget updates
     if (oldWidget.animationValue != widget.animationValue) {
       _animationValue = widget.animationValue;
     }
@@ -287,8 +287,8 @@ class _ControlPanelState extends State<ControlPanel> {
                       case AuraStyle.BLOB:
                         displayName = 'Blob Style';
                         break;
-                      case AuraStyle.FULL_COLOR:
-                        displayName = 'Full Color Style';
+                      case AuraStyle.GRADIENT:
+                        displayName = 'Gradient Style';
                         break;
                       case AuraStyle.SUNRAY:
                         displayName = 'Sunray Style';
@@ -510,7 +510,7 @@ class _ControlPanelState extends State<ControlPanel> {
     );
   }
 
-  /// 색상 스와치 위젯 생성
+  /// Create color swatch widget
   Widget _buildColorSwatch(String label, Color color) {
     return Column(
       children: [

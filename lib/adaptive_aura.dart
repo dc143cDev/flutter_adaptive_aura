@@ -14,7 +14,7 @@ export 'src/models/aura_color_palette.dart';
 // Export style classes
 export 'src/styles/aura_style_layer.dart';
 export 'src/styles/blob_style_layer.dart';
-export 'src/styles/full_color_style_layer.dart';
+export 'src/styles/gradient_style_layer.dart';
 export 'src/styles/sunray_style_layer.dart';
 
 // Include internal implementation files
@@ -24,13 +24,10 @@ part 'src/adaptive_aura_container.dart';
 // Define and export aura style enum
 /// Aura style enum
 enum AuraStyle {
-  /// Blob style (default)
   BLOB,
 
-  /// Full color style (Apple Music style)
-  FULL_COLOR,
+  GRADIENT,
 
-  /// Sunray style (NEW)
   SUNRAY,
 }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'aura_style_layer.dart';
 import '../models/aura_color_palette.dart';
 
-/// 그라디언트 포인트 정보를 저장하는 클래스
+/// Class to store gradient point information
 class _GradientPoint {
   final Color color;
   final Offset position;
@@ -19,12 +19,13 @@ class _GradientPoint {
   });
 }
 
-/// 하이라이트 포인트 정보를 저장하는 클래스
+/// Class to store highlight point information
 class _HighlightPoint {
   final Offset position;
   final double size;
   final double baseOpacity;
-  final double varietyThreshold; // 이 하이라이트가 활성화되는 버라이어티 임계값
+  final double
+      varietyThreshold; // The variety threshold at which this highlight is activated
 
   _HighlightPoint({
     required this.position,
@@ -34,34 +35,34 @@ class _HighlightPoint {
   });
 }
 
-/// 애플 뮤직 스타일의 꽉 찬 색상 배경을 구현하는 레이어
-class FullColorStyleLayer extends AuraStyleLayer {
-  /// 애니메이션 상태 값 (0.0 ~ 1.0)
+/// Layer implementing Apple Music style full-color background
+class GradientStyleLayer extends AuraStyleLayer {
+  /// Animation state value (0.0 ~ 1.0)
   final double animationValue;
 
-  /// 컨테이너 크기
+  /// Container size
   final Size containerSize;
 
-  /// 그라디언트 포인트 캐시
+  /// Gradient points cache
   List<_GradientPoint>? _gradientPointsCache;
 
-  /// 마지막으로 사용된 컨테이너 크기
+  /// Last used container size
   Size? _lastContainerSize;
 
-  /// 마지막으로 사용된 버라이어티 값
+  /// Last used variety value
   double? _lastVariety;
 
-  /// 마지막으로 사용된 애니메이션 값 (반올림된 값)
+  /// Last used animation value (rounded value)
   double? _lastAnimationValue;
 
-  /// 랜덤 생성기
+  /// Random generator
   final _random = math.Random();
 
-  /// 미리 정의된 하이라이트 포인트들
+  /// Predefined highlight points
   late final List<_HighlightPoint> _highlightPoints;
 
-  /// 생성자
-  FullColorStyleLayer({
+  /// Constructor
+  GradientStyleLayer({
     required super.colorPalette,
     required super.animationController,
     required super.animationDuration,
@@ -76,21 +77,21 @@ class FullColorStyleLayer extends AuraStyleLayer {
     _initializeHighlightPoints();
   }
 
-  /// 하이라이트 포인트 초기화
+  /// Initialize highlight points
   void _initializeHighlightPoints() {
     _highlightPoints = [
-      // 기본 상단 하이라이트 (항상 표시)
+      // Basic top highlight (always displayed)
       _HighlightPoint(
         position: Offset(
           containerSize.width * 0.5,
-          -containerSize.width * 0.3, // 더 위로 올림
+          -containerSize.width * 0.3, // Positioned higher
         ),
-        size: containerSize.width * 0.8, // 크기 감소
+        size: containerSize.width * 0.8, // Reduced size
         baseOpacity: 0.45,
         varietyThreshold: 0.0,
       ),
 
-      // 0.3 이상에서 표시되는 하이라이트들
+      // Highlights displayed at variety >= 0.3
       _HighlightPoint(
         position: Offset(
           containerSize.width * 0.85,
@@ -101,7 +102,7 @@ class FullColorStyleLayer extends AuraStyleLayer {
         varietyThreshold: 0.3,
       ),
 
-      // 중간 영역 하이라이트들 (비대칭적 배치)
+      // Middle area highlights (asymmetric placement)
       _HighlightPoint(
         position: Offset(
           containerSize.width * 0.25,
@@ -121,7 +122,7 @@ class FullColorStyleLayer extends AuraStyleLayer {
         varietyThreshold: 0.3,
       ),
 
-      // 0.7 이상에서 표시되는 하이라이트들
+      // Highlights displayed at variety >= 0.7
       _HighlightPoint(
         position: Offset(
           containerSize.width * 0.15,
@@ -143,43 +144,43 @@ class FullColorStyleLayer extends AuraStyleLayer {
     ];
   }
 
-  /// 버라이어티 값에 따른 그라디언트 포인트 개수 계산
+  /// Calculate gradient point count based on variety value
   int get _effectiveGradientPointCount {
-    // variety가 0.0일 때는 기본 그라디언트 포인트 2개만 사용
-    // variety가 1.0일 때는 최대 6개의 그라디언트 포인트 사용
+    // When variety is 0.0, use only 2 basic gradient points
+    // When variety is 1.0, use up to 6 gradient points
     if (variety <= 0.0) return 2;
-    return 2 + (4 * variety).round(); // 2 ~ 6개 (개수 절반으로 감소)
+    return 2 + (4 * variety).round(); // 2 ~ 6 points (count reduced by half)
   }
 
-  /// 캐시 키 생성 (애니메이션 값을 0.1 단위로 반올림)
+  /// Generate cache key (rounding animation value to 0.1 units)
   String _getCacheKey() {
-    // 애니메이션 값을 0.1 단위로 반올림하여 캐시 키 생성
+    // Create cache key by rounding animation value to 0.1 units
     final roundedAnimValue = (animationValue * 10).round() / 10;
     return "${containerSize.width}x${containerSize.height}_${variety}_${roundedAnimValue}";
   }
 
-  /// 그라디언트 포인트 생성
+  /// Generate gradient points
   List<_GradientPoint> _generateGradientPoints() {
     final points = <_GradientPoint>[];
     final pointCount = _effectiveGradientPointCount;
 
-    // 기본 그라디언트 포인트 (항상 포함)
+    // Basic gradient point (always included)
     points.add(_generateBaseGradientPoint());
 
-    // variety가 0보다 크면 추가 그라디언트 포인트 생성
+    // Create additional gradient points if variety > 0
     if (variety > 0.0 && pointCount > 2) {
-      // 버라이어티에 따라 더 다양한 색상 팔레트 사용
+      // More diverse color palette based on variety
       final colors = <Color>[];
 
-      // 색상 특성에 따라 색상 팔레트 구성 조정
+      // Adjust color palette composition according to color characteristic
       switch (colorCharacteristic) {
         case AuraColorCharacteristic.VIVID:
-          // 비비드 계열: 생생한 색상만 사용, 무채색 완전 제거
+          // Vivid theme: Only vibrant colors, completely remove grayscale
           colors.add(colorPalette.primary);
           colors.add(colorPalette.secondary);
           colors.add(colorPalette.tertiary);
 
-          // 추가 생생한 색상 혼합
+          // Add additional vibrant color mixes
           colors.add(
               Color.lerp(colorPalette.primary, colorPalette.secondary, 0.3)!);
           colors.add(
@@ -187,7 +188,7 @@ class FullColorStyleLayer extends AuraStyleLayer {
           colors.add(
               Color.lerp(colorPalette.tertiary, colorPalette.primary, 0.3)!);
 
-          // 더 다양한 색상 혼합 추가
+          // Add more diverse color mixes
           colors.add(
               Color.lerp(colorPalette.primary, colorPalette.secondary, 0.7)!);
           colors.add(
@@ -195,9 +196,9 @@ class FullColorStyleLayer extends AuraStyleLayer {
           colors.add(
               Color.lerp(colorPalette.tertiary, colorPalette.primary, 0.7)!);
 
-          // 밝은 색상 추가 (비중 낮게) - 무채색 대신 색상 밝기만 조정
+          // Add bright colors (lower weight) - adjust brightness instead of grayscale
           if (variety > 0.5) {
-            // 흰색 대신 다른 생생한 색상으로 밝기 조정
+            // Adjust brightness with vibrant colors instead of white
             colors.add(
                 Color.lerp(colorPalette.primary, colorPalette.secondary, 0.3)!);
             colors.add(Color.lerp(
@@ -208,34 +209,34 @@ class FullColorStyleLayer extends AuraStyleLayer {
           break;
 
         case AuraColorCharacteristic.GRAYSCALE:
-          // 무채색 계열: 무채색 위주로 구성
+          // Grayscale theme: Primarily grayscale colors
           colors.add(colorPalette.primary);
           colors.add(colorPalette.dark);
           colors.add(colorPalette.light);
 
-          // 추가 무채색 혼합
+          // Add additional grayscale mixes
           colors.add(Color.lerp(colorPalette.primary, colorPalette.dark, 0.5)!);
           colors
               .add(Color.lerp(colorPalette.primary, colorPalette.light, 0.5)!);
 
-          // 약간의 색상 추가 (비중 낮게)
+          // Add a touch of color (low weight)
           if (variety > 0.7) {
             colors.add(colorPalette.secondary.withOpacity(0.3));
           }
           break;
 
         case AuraColorCharacteristic.DARK:
-          // 어두운 색상 계열: 어두운 색상 위주로 구성
+          // Dark theme: Primarily dark colors
           colors.add(colorPalette.primary);
           colors.add(colorPalette.dark);
           colors.add(colorPalette.secondary);
 
-          // 추가 어두운 색상 혼합
+          // Add additional dark color mixes
           colors.add(Color.lerp(colorPalette.primary, colorPalette.dark, 0.7)!);
           colors
               .add(Color.lerp(colorPalette.secondary, colorPalette.dark, 0.7)!);
 
-          // 약간의 밝은 색상 추가 (비중 낮게)
+          // Add a touch of bright colors (low weight)
           if (variety > 0.6) {
             colors.add(
                 Color.lerp(colorPalette.primary, colorPalette.light, 0.2)!);
@@ -243,18 +244,18 @@ class FullColorStyleLayer extends AuraStyleLayer {
           break;
 
         case AuraColorCharacteristic.BRIGHT:
-          // 밝은 색상 계열: 밝은 색상 위주로 구성
+          // Bright theme: Primarily bright colors
           colors.add(colorPalette.primary);
           colors.add(colorPalette.light);
           colors.add(colorPalette.secondary);
 
-          // 추가 밝은 색상 혼합
+          // Add additional bright color mixes
           colors
               .add(Color.lerp(colorPalette.primary, colorPalette.light, 0.7)!);
           colors.add(
               Color.lerp(colorPalette.secondary, colorPalette.light, 0.7)!);
 
-          // 약간의 어두운 색상 추가 (비중 낮게)
+          // Add a touch of dark colors (low weight)
           if (variety > 0.6) {
             colors
                 .add(Color.lerp(colorPalette.primary, colorPalette.dark, 0.2)!);
@@ -263,13 +264,13 @@ class FullColorStyleLayer extends AuraStyleLayer {
 
         case AuraColorCharacteristic.MEDIUM:
         default:
-          // 중간 톤 계열: 균형 잡힌 색상 구성
+          // Medium tone theme: Balanced color composition
           colors.add(colorPalette.primary);
           colors.add(colorPalette.secondary);
           colors.add(colorPalette.tertiary);
           colors.add(colorPalette.light);
 
-          // 버라이어티가 높을수록 더 다양한 색상 혼합 추가
+          // Add more diverse color mixes as variety increases
           if (variety > 0.3) {
             colors.add(
                 Color.lerp(colorPalette.primary, colorPalette.secondary, 0.5)!);
@@ -294,59 +295,59 @@ class FullColorStyleLayer extends AuraStyleLayer {
           break;
       }
 
-      // 화면을 더 균등하게 나누기 위한 그리드 설정
-      // 포인트 개수가 적으므로 더 넓은 영역을 커버하도록 배치
+      // Grid settings for more even distribution on screen
+      // Place points to cover wider areas as there are fewer points
       final gridSize = math.sqrt(pointCount).ceil();
       final cellWidth = containerSize.width / gridSize;
       final cellHeight = containerSize.height / gridSize;
 
       for (int i = 1; i < pointCount; i++) {
-        // 색상 선택 (인덱스에 따라 다양한 색상 선택)
-        // 색상 특성에 따라 색상 선택 로직 조정
+        // Color selection (diverse color selection based on index)
+        // Adjust color selection logic based on color characteristic
         int colorIndex;
 
         switch (colorCharacteristic) {
           case AuraColorCharacteristic.VIVID:
-            // 비비드 계열: 생생한 색상 위주로 선택 (무채색 완전 제거)
-            // 항상 생생한 색상만 선택
+            // Vivid theme: Primarily vibrant colors (completely remove grayscale)
+            // Always select vibrant colors
             colorIndex = _random.nextInt(colors.length);
             break;
 
           case AuraColorCharacteristic.GRAYSCALE:
-            // 무채색 계열: 무채색 위주로 선택
+            // Grayscale theme: Primarily grayscale colors
             colorIndex = _random.nextInt(colors.length);
             break;
 
           case AuraColorCharacteristic.DARK:
-            // 어두운 색상 계열: 어두운 색상 위주로 선택
+            // Dark theme: Primarily dark colors
             if (_random.nextDouble() < 0.7) {
-              // 70% 확률로 어두운 색상 선택 (인덱스 0~4)
+              // 70% chance to select dark colors (indices 0-4)
               colorIndex = _random.nextInt(math.min(5, colors.length));
             } else {
-              // 30% 확률로 나머지 색상 중에서 선택
+              // 30% chance to select from remaining colors
               colorIndex = _random.nextInt(colors.length);
             }
             break;
 
           case AuraColorCharacteristic.BRIGHT:
-            // 밝은 색상 계열: 밝은 색상 위주로 선택
+            // Bright theme: Primarily bright colors
             if (_random.nextDouble() < 0.7) {
-              // 70% 확률로 밝은 색상 선택 (인덱스 0~4)
+              // 70% chance to select bright colors (indices 0-4)
               colorIndex = _random.nextInt(math.min(5, colors.length));
             } else {
-              // 30% 확률로 나머지 색상 중에서 선택
+              // 30% chance to select from remaining colors
               colorIndex = _random.nextInt(colors.length);
             }
             break;
 
           case AuraColorCharacteristic.MEDIUM:
           default:
-            // 중간 톤 계열: 버라이어티에 따라 다양한 색상 선택
+            // Medium tone theme: Variety determines color selection diversity
             if (_random.nextDouble() < variety * 0.8) {
-              // 버라이어티가 높을수록 다양한 색상 사용 확률 증가
+              // Higher variety increases chance of using diverse colors
               colorIndex = _random.nextInt(colors.length);
             } else {
-              // 기본 색상 중에서 선택 (primary, secondary, tertiary, light)
+              // Select from basic colors (primary, secondary, tertiary, light)
               colorIndex = _random.nextInt(math.min(4, colors.length));
             }
             break;
@@ -354,18 +355,18 @@ class FullColorStyleLayer extends AuraStyleLayer {
 
         final baseColor = colors[colorIndex];
 
-        // 색상 특성에 따라 색상 조정
+        // Adjust color based on color characteristic
         Color gradientColor;
         double opacity;
 
         switch (colorCharacteristic) {
           case AuraColorCharacteristic.VIVID:
-            // 비비드 계열: 원래 색상의 생생함을 최대한 유지
+            // Vivid theme: Maintain the vibrancy of original colors
             gradientColor = baseColor;
             opacity = 0.3 + _random.nextDouble() * 0.2;
             break;
           case AuraColorCharacteristic.GRAYSCALE:
-            // 무채색 계열: 회색조로 변환하고 약간 밝게
+            // Grayscale theme: Convert to grayscale and slightly brighten
             final brightness = _calculateColorBrightness(baseColor);
             gradientColor = Color.fromRGBO(
               (brightness * 255).round(),
@@ -375,35 +376,35 @@ class FullColorStyleLayer extends AuraStyleLayer {
             );
             gradientColor = Color.lerp(gradientColor, colorPalette.light,
                 0.1 + _random.nextDouble() * 0.2)!;
-            opacity = 0.2 + _random.nextDouble() * 0.15; // 불투명도 유지
+            opacity = 0.2 + _random.nextDouble() * 0.15; // Maintain opacity
             break;
           case AuraColorCharacteristic.DARK:
-            // 어두운 색상 계열: 어둡게 조정
+            // Dark theme: Adjust to darker tones
             gradientColor = Color.lerp(baseColor, colorPalette.dark,
                 0.2 + _random.nextDouble() * 0.3)!;
-            opacity = 0.2 + _random.nextDouble() * 0.15; // 불투명도 유지
+            opacity = 0.2 + _random.nextDouble() * 0.15; // Maintain opacity
             break;
           case AuraColorCharacteristic.BRIGHT:
-            // 밝은 색상 계열: 밝게 조정
+            // Bright theme: Adjust to brighter tones
             gradientColor = Color.lerp(baseColor, colorPalette.light,
                 0.3 + _random.nextDouble() * 0.3)!;
-            opacity = 0.2 + _random.nextDouble() * 0.15; // 불투명도 유지
+            opacity = 0.2 + _random.nextDouble() * 0.15; // Maintain opacity
             break;
           case AuraColorCharacteristic.MEDIUM:
           default:
-            // 중간 톤 계열: 약간 밝게 조정
+            // Medium tone theme: Slightly brighten
             gradientColor = Color.lerp(baseColor, colorPalette.light,
                 0.1 + _random.nextDouble() * 0.2)!;
-            opacity = 0.2 + _random.nextDouble() * 0.15; // 불투명도 유지
+            opacity = 0.2 + _random.nextDouble() * 0.15; // Maintain opacity
             break;
         }
 
-        // 위치 계산 (그리드 기반으로 더 균등하게 분포)
-        // 포인트 개수가 적으므로 화면 전체에 더 넓게 분포
+        // Calculate position (grid-based for more even distribution)
+        // Distribute points more widely across the screen as there are fewer points
         final gridX = i % gridSize;
         final gridY = i ~/ gridSize;
 
-        // 그리드 내에서 랜덤한 위치 (완전 랜덤보다 더 균등한 분포)
+        // Random position within grid cell (more even distribution than completely random)
         final position = Offset(
           (gridX * cellWidth) +
               (_random.nextDouble() * cellWidth * 0.8) +
@@ -413,8 +414,8 @@ class FullColorStyleLayer extends AuraStyleLayer {
               (cellHeight * 0.1),
         );
 
-        // 크기 계산 (화면 너비의 70%~150%)
-        // 더 큰 크기로 설정하여 블러 효과가 더 넓게 퍼지도록 함
+        // Calculate size (70%-150% of screen width)
+        // Set larger sizes for blur effects to spread more widely
         final size = containerSize.width * (0.7 + _random.nextDouble() * 0.8);
 
         points.add(_GradientPoint(
@@ -429,76 +430,76 @@ class FullColorStyleLayer extends AuraStyleLayer {
     return points;
   }
 
-  /// 기본 그라디언트 포인트 생성 (상단 중앙)
+  /// Generate basic gradient point (top center)
   _GradientPoint _generateBaseGradientPoint() {
-    // 색상 특성에 따라 그라디언트 포인트 위치와 크기 조정
+    // Adjust gradient point position and size based on color characteristic
     double size;
     double opacity;
     Offset position;
     Color gradientColor;
 
-    // 애니메이션 값에 따라 크기 조정 (더 넓어지는 효과)
+    // Adjust size based on animation value (widening effect)
     final sizeMultiplier = 1.0 + (0.2 * animationValue);
 
     switch (colorCharacteristic) {
       case AuraColorCharacteristic.VIVID:
-        // 비비드 계열: 큰 그라디언트, 중간 불투명도, 생생한 색상 사용
-        size = containerSize.width * 1.8 * sizeMultiplier; // 크기 유지
-        opacity = 0.5 * animationValue; // 불투명도 약간 증가
+        // Vivid theme: Large gradient, medium opacity, vibrant colors
+        size = containerSize.width * 1.8 * sizeMultiplier; // Maintain size
+        opacity = 0.5 * animationValue; // Slightly increase opacity
         position = Offset(
           containerSize.width * 0.5,
-          -size * 0.3, // 상단에 위치 유지
+          -size * 0.3, // Position at top
         );
 
-        // 상단 하이라이트는 유지하되, 더 선명한 색상 사용
-        // 원색 그대로 사용하여 생생함 극대화
+        // Maintain top highlight but use more vibrant colors
+        // Use original colors to maximize vibrancy
         gradientColor = colorPalette.primary;
         break;
       case AuraColorCharacteristic.GRAYSCALE:
-        // 무채색 계열: 작은 그라디언트, 낮은 불투명도
-        size = containerSize.width * 1.5 * sizeMultiplier; // 크기 유지
-        opacity = 0.35 * animationValue; // 불투명도 유지
+        // Grayscale theme: Small gradient, low opacity
+        size = containerSize.width * 1.5 * sizeMultiplier; // Maintain size
+        opacity = 0.35 * animationValue; // Maintain opacity
         position = Offset(
           containerSize.width * 0.5,
-          -size * 0.4, // 상단에 위치
+          -size * 0.4, // Position at top
         );
-        // 어두운 색상과 밝은 색상을 혼합하여 부드러운 그라디언트 생성
+        // Mix dark and light colors for smooth gradient
         gradientColor = Color.lerp(colorPalette.light, colorPalette.dark, 0.4)!;
         break;
       case AuraColorCharacteristic.DARK:
-        // 어두운 색상 계열: 중간 그라디언트, 낮은 불투명도
-        size = containerSize.width * 1.6 * sizeMultiplier; // 크기 유지
-        opacity = 0.35 * animationValue; // 불투명도 유지
+        // Dark theme: Medium gradient, low opacity
+        size = containerSize.width * 1.6 * sizeMultiplier; // Maintain size
+        opacity = 0.35 * animationValue; // Maintain opacity
         position = Offset(
           containerSize.width * 0.6,
-          -size * 0.4, // 상단에 위치
+          -size * 0.4, // Position at top
         );
-        // 주요 색상과 어두운 색상을 혼합하여 부드러운 그라디언트 생성
+        // Mix primary and dark colors for smooth gradient
         gradientColor =
             Color.lerp(colorPalette.primary, colorPalette.dark, 0.3)!;
         break;
       case AuraColorCharacteristic.BRIGHT:
-        // 밝은 색상 계열: 큰 그라디언트, 중간 불투명도
-        size = containerSize.width * 1.7 * sizeMultiplier; // 크기 유지
-        opacity = 0.4 * animationValue; // 불투명도 유지
+        // Bright theme: Large gradient, medium opacity
+        size = containerSize.width * 1.7 * sizeMultiplier; // Maintain size
+        opacity = 0.4 * animationValue; // Maintain opacity
         position = Offset(
           containerSize.width * 0.5,
-          -size * 0.3, // 상단에 위치
+          -size * 0.3, // Position at top
         );
-        // 주요 색상과 밝은 색상을 혼합하여 자연스러운 그라디언트 생성
+        // Mix primary and light colors for natural gradient
         gradientColor =
             Color.lerp(colorPalette.primary, colorPalette.light, 0.5)!;
         break;
       case AuraColorCharacteristic.MEDIUM:
       default:
-        // 중간 톤 계열: 중간 그라디언트, 중간 불투명도
-        size = containerSize.width * 1.6 * sizeMultiplier; // 크기 유지
-        opacity = 0.35 * animationValue; // 불투명도 유지
+        // Medium tone theme: Medium gradient, medium opacity
+        size = containerSize.width * 1.6 * sizeMultiplier; // Maintain size
+        opacity = 0.35 * animationValue; // Maintain opacity
         position = Offset(
           containerSize.width * 0.5,
-          -size * 0.4, // 상단에 위치
+          -size * 0.4, // Position at top
         );
-        // 주요 색상과 밝은 색상을 혼합하여 자연스러운 그라디언트 생성
+        // Mix light and primary colors for natural gradient
         gradientColor =
             Color.lerp(colorPalette.light, colorPalette.primary, 0.3)!;
         break;
@@ -512,9 +513,9 @@ class FullColorStyleLayer extends AuraStyleLayer {
     );
   }
 
-  /// 색상의 밝기 계산 (0.0 ~ 1.0)
+  /// Calculate color brightness (0.0 ~ 1.0)
   double _calculateColorBrightness(Color color) {
-    // HSL 모델에서의 밝기 (Lightness) 계산
+    // Calculate brightness (Lightness) in HSL model
     final r = color.red / 255;
     final g = color.green / 255;
     final b = color.blue / 255;
@@ -522,16 +523,16 @@ class FullColorStyleLayer extends AuraStyleLayer {
     final max = math.max(r, math.max(g, b));
     final min = math.min(r, math.min(g, b));
 
-    // HSL의 L 값 계산
+    // Calculate L value of HSL
     return (max + min) / 2;
   }
 
-  /// 그라디언트 초기화
+  /// Initialize gradient
   void _initialize() {
-    // 캐시 키 생성
+    // Generate cache key
     final cacheKey = _getCacheKey();
 
-    // 컨테이너 크기가 변경되었거나 버라이어티 값이 변경되었거나 애니메이션 값이 크게 변경된 경우에만 그라디언트 재생성
+    // Only regenerate gradient when container size, variety value, or animation value changes significantly
     if (_gradientPointsCache == null ||
         _lastContainerSize != containerSize ||
         _lastVariety != variety ||
@@ -545,16 +546,16 @@ class FullColorStyleLayer extends AuraStyleLayer {
 
   @override
   Widget build(BuildContext context) {
-    // 부모 클래스의 build 메서드 사용
+    // Use parent class build method
     return super.build(context);
   }
 
   @override
   Widget buildBackgroundLayer() {
-    // 애니메이션 값에 따라 그라디언트 위치 조정
+    // Adjust gradient position based on animation value
     final animationOffset = Alignment(0, 0.2 - (0.2 * animationValue));
 
-    // 팔레트 색상만 사용하여 그라디언트 생성
+    // Create gradient using only palette colors
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -572,34 +573,34 @@ class FullColorStyleLayer extends AuraStyleLayer {
 
   @override
   Widget buildBlurLayer() {
-    // 색상 특성에 따라 블러 강도 조정
+    // Adjust blur strength based on color characteristic
     double blurStrength;
     double opacityMultiplier;
 
     switch (colorCharacteristic) {
       case AuraColorCharacteristic.VIVID:
-        // 비비드 계열: 블러 최소화, 불투명도 낮게 유지
-        blurStrength = math.max(1.0, blurStrengthX / 4); // 블러 더 감소
-        opacityMultiplier = 0.2; // 불투명도 더 감소
+        // Vivid theme: Minimize blur, maintain low opacity
+        blurStrength = math.max(1.0, blurStrengthX / 4);
+        opacityMultiplier = 0.2;
         break;
       case AuraColorCharacteristic.GRAYSCALE:
-        // 무채색 계열: 블러 중간, 불투명도 높게
+        // Grayscale theme: Medium blur, high opacity
         blurStrength = math.max(1.0, blurStrengthX / 2);
         opacityMultiplier = 0.6;
         break;
       case AuraColorCharacteristic.DARK:
-        // 어두운 색상 계열: 블러 강하게, 불투명도 높게
+        // Dark theme: Strong blur, high opacity
         blurStrength = math.max(1.0, blurStrengthX / 1.5);
         opacityMultiplier = 0.7;
         break;
       case AuraColorCharacteristic.BRIGHT:
-        // 밝은 색상 계열: 블러 약하게, 불투명도 중간
+        // Bright theme: Weak blur, medium opacity
         blurStrength = math.max(1.0, blurStrengthX / 2.5);
         opacityMultiplier = 0.4;
         break;
       case AuraColorCharacteristic.MEDIUM:
       default:
-        // 중간 톤 계열: 블러 중간, 불투명도 중간
+        // Medium tone theme: Medium blur, medium opacity
         blurStrength = math.max(1.0, blurStrengthX / 2);
         opacityMultiplier = 0.5;
         break;
@@ -627,7 +628,7 @@ class FullColorStyleLayer extends AuraStyleLayer {
     return ClipRect(
       child: Stack(
         children: [
-          // 하이라이트 레이어
+          // Highlight layer
           CustomPaint(
             size: containerSize,
             painter: _HighlightPainter(
@@ -639,7 +640,7 @@ class FullColorStyleLayer extends AuraStyleLayer {
             ),
           ),
 
-          // 블러 레이어
+          // Blur layer
           BackdropFilter(
             filter: ui.ImageFilter.blur(
               sigmaX: 15.0 + (25.0 * variety),
@@ -669,13 +670,12 @@ class _GradientPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 버라이어티와 색상 특성에 따라 블렌딩 모드 조정
     BlendMode blendMode;
 
-    // 색상 특성에 따라 블렌딩 모드 조정
+    // Adjust blending mode based on color characteristic
     switch (colorCharacteristic) {
       case AuraColorCharacteristic.VIVID:
-        blendMode = BlendMode.screen; // 항상 screen 모드 사용 (더 선명하게)
+        blendMode = BlendMode.screen; // Always use screen mode (sharper)
         break;
       case AuraColorCharacteristic.GRAYSCALE:
         blendMode = variety > 0.3 ? BlendMode.multiply : BlendMode.srcOver;
@@ -692,28 +692,25 @@ class _GradientPainter extends CustomPainter {
         break;
     }
 
-    // 그라디언트 포인트 그리기 (더 부드러운 효과를 위해 수정)
     for (final point in gradientPoints) {
-      // 비비드 계열일 경우 블러 효과 감소
       double blurMultiplier = 1.0;
       if (colorCharacteristic == AuraColorCharacteristic.VIVID) {
-        blurMultiplier = 0.7; // 블러 30% 감소
+        blurMultiplier = 0.7;
       }
 
-      // 그라디언트 크기 계산
       final radius = point.size / 2 * (1.0 + variety * 1.0);
 
-      // 그라디언트 위치 계산
+      // Calculate gradient position
       final center = Offset(point.position.dx, point.position.dy);
 
-      // 그라디언트 색상 및 스톱 계산
+      // Calculate gradient colors and stops
       List<Color> colors;
 
-      // 비비드 계열일 경우 더 선명한 색상 사용
+      // Use more vibrant colors for vivid theme
       if (colorCharacteristic == AuraColorCharacteristic.VIVID) {
         colors = [
-          point.color.withOpacity(point.opacity * 0.8), // 불투명도 증가
-          point.color.withOpacity(point.opacity * 0.6), // 불투명도 증가
+          point.color.withOpacity(point.opacity * 0.8),
+          point.color.withOpacity(point.opacity * 0.6),
           point.color.withOpacity(point.opacity * 0.3),
           point.color.withOpacity(point.opacity * 0.1),
           Colors.transparent,
@@ -728,7 +725,7 @@ class _GradientPainter extends CustomPainter {
         ];
       }
 
-      // 버라이어티에 따라 스톱 위치 조정
+      // Adjust stops based on variety
       final stops = [
         0.0,
         0.2 + (variety * 0.1),
@@ -737,7 +734,7 @@ class _GradientPainter extends CustomPainter {
         1.0,
       ];
 
-      // 첫 번째 그라디언트 (큰 블러)
+      // First gradient (large blur)
       final bigBlurPaint = Paint()
         ..shader = RadialGradient(
           colors: colors,
@@ -749,7 +746,7 @@ class _GradientPainter extends CustomPainter {
         ..maskFilter = MaskFilter.blur(
             BlurStyle.normal, (50.0 + (40.0 * variety)) * blurMultiplier);
 
-      // 타원형 그라디언트 그리기
+      // Draw elliptical gradient
       final bigRect = Rect.fromCenter(
         center: center,
         width: radius * 3.5,
@@ -757,7 +754,7 @@ class _GradientPainter extends CustomPainter {
       );
       canvas.drawOval(bigRect, bigBlurPaint);
 
-      // 두 번째 그라디언트 (중간 블러)
+      // Second gradient (medium blur)
       final mediumBlendMode;
       switch (colorCharacteristic) {
         case AuraColorCharacteristic.VIVID:
@@ -796,7 +793,7 @@ class _GradientPainter extends CustomPainter {
       );
       canvas.drawOval(mediumRect, mediumBlurPaint);
 
-      // 세 번째 그라디언트 (작은 블러, 중심부 강조)
+      // Third gradient (small blur, emphasize center)
       final smallBlendMode;
       switch (colorCharacteristic) {
         case AuraColorCharacteristic.VIVID:
@@ -836,55 +833,56 @@ class _GradientPainter extends CustomPainter {
       canvas.drawOval(smallRect, smallBlurPaint);
     }
 
-    // 버라이어티가 높을 때 추가 효과 (애플 뮤직 스타일의 미묘한 텍스처)
+    // Additional effect when variety is high (subtle texture like Apple Music)
     if (variety > 0.3) {
-      // 색상 특성에 따라 오버레이 효과 조정
+      // Adjust overlay effect based on color characteristic
       if (colorCharacteristic == AuraColorCharacteristic.VIVID) {
-        // 비비드 계열: 오버레이 효과 제거 (뿌연 효과 방지)
-        // 노이즈 효과도 최소화
-        final random = math.Random(42); // 고정된 시드로 일관된 패턴 생성
+        // Vivid theme: Remove overlay effect (prevent blurry effect)
+        // Minimize noise effect
+        final random = math.Random(42); // Fixed seed for consistent pattern
         final pointCount =
-            (size.width * size.height / 3000).round(); // 노이즈 포인트 대폭 감소
+            (size.width * size.height / 3000).round(); // Reduce noise points
 
         for (int i = 0; i < pointCount; i++) {
-          // 노이즈 색상도 더 선명하게
+          // Noise color is also more vibrant
           final colorIndex = random.nextInt(gradientPoints.length);
           final noiseColor = gradientPoints[colorIndex]
               .color
-              .withOpacity(0.003 * variety * animationValue); // 불투명도 감소
+              .withOpacity(0.003 * variety * animationValue); // Reduce opacity
 
           final noisePaint = Paint()
             ..color = noiseColor
-            ..blendMode = BlendMode.screen // 더 선명한 블렌드 모드
-            ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1.0); // 블러 감소
+            ..blendMode = BlendMode.screen // More vibrant blend mode
+            ..maskFilter =
+                MaskFilter.blur(BlurStyle.normal, 1.0); // Reduce blur
 
           final x = random.nextDouble() * size.width;
           final y = random.nextDouble() * size.height;
-          final radius = 0.2 + random.nextDouble() * 0.3; // 크기 감소
+          final radius = 0.2 + random.nextDouble() * 0.3; // Reduce size
 
           canvas.drawCircle(Offset(x, y), radius, noisePaint);
         }
       } else {
-        // 다른 색상 특성: 기존 코드 유지
+        // Other color characteristics: Keep existing code
         final overlayPaint = Paint()
           ..color = Colors.white
-              .withOpacity(0.01 * variety * animationValue) // 불투명도 감소
+              .withOpacity(0.01 * variety * animationValue) // Reduce opacity
           ..blendMode = BlendMode.overlay;
 
         canvas.drawRect(
             Rect.fromLTWH(0, 0, size.width, size.height), overlayPaint);
 
-        // 미묘한 노이즈 효과 추가 (작은 점들)
-        final random = math.Random(42); // 고정된 시드로 일관된 패턴 생성
+        // Add subtle noise effect (small points)
+        final random = math.Random(42); // Fixed seed for consistent pattern
         final pointCount =
-            (size.width * size.height / 1200).round(); // 노이즈 포인트 감소
+            (size.width * size.height / 1200).round(); // Reduce noise points
 
         final noisePaint = Paint()
           ..color = Colors.white
-              .withOpacity(0.005 * variety * animationValue) // 불투명도 감소
+              .withOpacity(0.005 * variety * animationValue) // Reduce opacity
           ..blendMode = BlendMode.overlay
-          ..maskFilter =
-              MaskFilter.blur(BlurStyle.normal, 2.0); // 노이즈에도 약간의 블러 추가
+          ..maskFilter = MaskFilter.blur(
+              BlurStyle.normal, 2.0); // Add slight blur to noise
 
         for (int i = 0; i < pointCount; i++) {
           final x = random.nextDouble() * size.width;
@@ -937,23 +935,23 @@ class _HighlightPainter extends CustomPainter {
       Color gradientColor;
       double baseOpacity = point.baseOpacity;
       double blurStrength;
-      BlendMode blendMode = BlendMode.srcOver; // 기본 블렌드 모드로 변경
+      BlendMode blendMode = BlendMode.srcOver; // Default blend mode
 
-      // 위치에 따른 색상 선택 로직 수정
+      // Modify color selection logic based on position
       if (point.position.dy < 0) {
-        // 상단 하이라이트
+        // Top highlight
         gradientColor = colorPalette.primary;
         blurStrength = 20.0;
       } else if (point.position.dy > size.height * 0.7) {
-        // 하단 하이라이트
+        // Bottom highlight
         gradientColor = colorPalette.primary;
         blurStrength = 25.0;
       } else {
-        // 중간 영역 하이라이트 - 팔레트 색상만 활용
+        // Middle area highlight - Use only palette colors
         final horizontalPosition = point.position.dx / size.width;
         final verticalPosition = point.position.dy / size.height;
 
-        // 위치에 따른 색상 믹스
+        // Color mix based on position
         if (horizontalPosition < 0.5) {
           gradientColor = Color.lerp(
             colorPalette.secondary,
@@ -972,9 +970,9 @@ class _HighlightPainter extends CustomPainter {
 
       final opacity = baseOpacity * opacityMultiplier * animationValue;
 
-      // 비정형 형태를 위한 여러 레이어의 그라디언트
+      // For irregular shape, multiple gradient layers
       for (int i = 0; i < 3; i++) {
-        // 각 레이어별 색상 조정 - 팔레트 색상만 활용
+        // Adjust color for each layer - Use only palette colors
         Color layerColor;
         if (i == 0) {
           layerColor = gradientColor;
@@ -997,7 +995,7 @@ class _HighlightPainter extends CustomPainter {
           math.sin(i * math.pi * 2 / 3) * (point.size * 0.1),
         );
 
-        // 그라디언트 색상 - 투명도만 조정
+        // Gradient colors - Adjust only opacity
         final colors = [
           layerColor.withOpacity(opacity),
           layerColor.withOpacity(opacity * 0.6),
@@ -1026,7 +1024,7 @@ class _HighlightPainter extends CustomPainter {
             blurStrength * (1.0 + (i * 0.15)),
           );
 
-        // 비정형 형태 생성
+        // Create irregular shape
         final rotationAngle = i * math.pi / 4;
         final rect = Rect.fromCenter(
           center: point.position + offset,
@@ -1052,36 +1050,36 @@ class _HighlightPainter extends CustomPainter {
   }
 }
 
-/// 주어진 기준 색상과 가장 대비되는 색상을 반환
+/// Return the color that contrasts most with the given base color
 Color _getContrastColor({
   required Color baseColor,
   required Color option1,
   required Color option2,
 }) {
-  // HSV 색상 공간에서의 색상(Hue) 차이를 계산
+  // Calculate hue distance in hue space (0-360 degrees)
   final baseHSV = _colorToHSV(baseColor);
   final option1HSV = _colorToHSV(option1);
   final option2HSV = _colorToHSV(option2);
 
-  // 색상환에서의 거리 계산 (0-360도)
+  // Calculate hue distance in hue space (0-360 degrees)
   final diff1 = _calculateHueDistance(baseHSV[0], option1HSV[0]);
   final diff2 = _calculateHueDistance(baseHSV[0], option2HSV[0]);
 
-  // 채도(Saturation)와 명도(Value) 차이도 고려
+  // Consider saturation and value differences
   final satDiff1 = (baseHSV[1] - option1HSV[1]).abs();
   final satDiff2 = (baseHSV[1] - option2HSV[1]).abs();
   final valDiff1 = (baseHSV[2] - option1HSV[2]).abs();
   final valDiff2 = (baseHSV[2] - option2HSV[2]).abs();
 
-  // 종합적인 대비 점수 계산
+  // Calculate comprehensive contrast score
   final score1 = diff1 * 0.6 + satDiff1 * 0.2 + valDiff1 * 0.2;
   final score2 = diff2 * 0.6 + satDiff2 * 0.2 + valDiff2 * 0.2;
 
-  // 더 높은 대비 점수를 가진 색상 반환
+  // Return the color with the higher contrast score
   return score1 > score2 ? option1 : option2;
 }
 
-/// RGB 색상을 HSV로 변환
+/// Convert RGB color to HSV
 List<double> _colorToHSV(Color color) {
   final r = color.red / 255.0;
   final g = color.green / 255.0;
@@ -1109,8 +1107,8 @@ List<double> _colorToHSV(Color color) {
   return [hue, saturation, value];
 }
 
-/// 두 색상(Hue) 간의 거리 계산
+/// Calculate hue distance between two colors
 double _calculateHueDistance(double hue1, double hue2) {
   final diff = (hue1 - hue2).abs();
-  return math.min(diff, 360 - diff) / 180.0; // 0-1 범위로 정규화
+  return math.min(diff, 360 - diff) / 180.0; // Normalize to 0-1 range
 }

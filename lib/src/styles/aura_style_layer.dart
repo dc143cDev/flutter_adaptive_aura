@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import '../../adaptive_aura.dart';
 import '../models/aura_color_palette.dart';
 import 'blob_style_layer.dart';
-import 'full_color_style_layer.dart';
+import 'gradient_style_layer.dart';
 import 'sunray_style_layer.dart';
 
 /// Color characteristic enumeration
@@ -364,8 +364,8 @@ abstract class AuraStyleLayer extends StatelessWidget {
           containerSize: containerSize,
           variety: variety,
         );
-      case AuraStyle.FULL_COLOR:
-        return FullColorStyleLayer(
+      case AuraStyle.GRADIENT:
+        return GradientStyleLayer(
           colorPalette: colorPalette,
           animationController: animationController,
           animationDuration: animationDuration,

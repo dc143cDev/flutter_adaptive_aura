@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'aura_style_layer.dart';
 import '../models/aura_color_palette.dart';
 
-/// 랜덤 값들을 저장하는 전역 클래스
-/// 이를 통해 위젯이 리빌드되어도 랜덤 값들이 유지됩니다.
+/// Global class for storing random values
+/// This allows random values to persist even when the widget rebuilds
 class _BlobStyleConfig {
   static final _BlobStyleConfig _instance = _BlobStyleConfig._internal();
 
@@ -17,66 +17,66 @@ class _BlobStyleConfig {
     _initialize();
   }
 
-  /// 랜덤 생성기
+  /// Random generator
   final _random = math.Random();
 
-  /// 블롭 위치 오프셋 (랜덤 생성)
+  /// Blob position offsets (randomly generated)
   late final List<Offset> blobOffsets;
 
-  /// 블롭 크기 (랜덤 생성)
+  /// Blob sizes (randomly generated)
   late final List<double> blobSizes;
 
-  /// 블롭 회전 각도 (랜덤 생성)
+  /// Blob rotation angles (randomly generated)
   late final List<double> blobRotations;
 
-  /// 블롭 이동 방향 및 거리 (랜덤 생성)
+  /// Blob movement vectors and distances (randomly generated)
   late final List<Offset> blobMovementVectors;
 
-  /// 작은 포인트 이동 방향 및 거리 (랜덤 생성)
+  /// Small point movement vectors and distances (randomly generated)
   late final List<Offset> smallBlobMovementVectors;
 
-  /// 작은 포인트 위치 (랜덤 생성)
+  /// Small point positions (randomly generated)
   late final List<Offset> smallBlobOffsets;
 
-  /// 작은 포인트 크기 (랜덤 생성)
+  /// Small point sizes (randomly generated)
   late final List<double> smallBlobSizes;
 
-  /// 작은 포인트 회전 (랜덤 생성)
+  /// Small point rotations (randomly generated)
   late final List<double> smallBlobRotations;
 
-  /// 초기화 여부
+  /// Initialization status
   bool _isInitialized = false;
 
-  /// 최대 블롭 개수
+  /// Maximum blob count
   static const int maxBlobCount = 100;
 
-  /// 최대 작은 포인트 개수
+  /// Maximum small point count
   static const int maxSmallBlobCount = 200;
 
-  /// 기본 블롭 개수
+  /// Default blob count
   static const int defaultBlobCount = 18;
 
-  /// 기본 작은 포인트 개수
+  /// Default small point count
   static const int defaultSmallBlobCount = 20;
 
   void _initialize() {
     if (_isInitialized) return;
 
-    // 최대 개수로 리스트 초기화
-    // 블롭 이동 벡터 생성 (이동 거리: 6~16픽셀)
+    // Initialize lists with maximum count
+    // Create blob movement vectors (movement distance: 6~16 pixels)
     blobMovementVectors = List.generate(maxBlobCount,
         (_) => _generateRandomMovementVector(minDistance: 6, maxDistance: 16));
 
-    // 작은 포인트 이동 벡터 생성 (이동 거리: 4~10픽셀)
+    // Create small point movement vectors (movement distance: 4~10 pixels)
     smallBlobMovementVectors = List.generate(maxSmallBlobCount,
         (_) => _generateRandomMovementVector(minDistance: 4, maxDistance: 10));
 
-    // 랜덤 블롭 위치, 크기, 회전 생성
+    // Generate random blob positions, sizes, and rotations
     blobOffsets = List.generate(maxBlobCount, (_) => _randomOffset());
     blobSizes = List.generate(maxBlobCount, (_) => _randomSize());
     blobRotations = List.generate(maxBlobCount, (_) => _randomRotation());
 
-    // 작은 포인트 위치, 크기, 회전 생성
+    // Generate small point positions, sizes, and rotations
     smallBlobOffsets = List.generate(maxSmallBlobCount, (_) => _randomOffset());
     smallBlobSizes =
         List.generate(maxSmallBlobCount, (_) => _randomSmallSize());
@@ -86,24 +86,24 @@ class _BlobStyleConfig {
     _isInitialized = true;
   }
 
-  /// 무작위 이동 벡터 생성 (지정된 범위 내의 거리와 무작위 방향)
+  /// Generate random movement vector (specified distance range and random direction)
   Offset _generateRandomMovementVector(
       {double minDistance = 6, double maxDistance = 16}) {
-    // 무작위 거리 (기본값: 6~16픽셀)
+    // Random distance (default: 6~16 pixels)
     final distance =
         minDistance + _random.nextDouble() * (maxDistance - minDistance);
 
-    // 무작위 각도 (0~2π)
+    // Random angle (0~2π)
     final angle = _random.nextDouble() * 2 * math.pi;
 
-    // 극좌표를 직교좌표로 변환
+    // Convert polar coordinates to Cartesian coordinates
     return Offset(
       distance * math.cos(angle),
       distance * math.sin(angle),
     );
   }
 
-  /// 랜덤 오프셋 생성 (-0.8 ~ 0.8 범위)
+  /// Generate random offset (-0.8 ~ 0.8 range)
   Offset _randomOffset() {
     return Offset(
       _random.nextDouble() * 1.6 - 0.8,
@@ -111,23 +111,23 @@ class _BlobStyleConfig {
     );
   }
 
-  /// 랜덤 크기 생성 (100 ~ 350 범위)
+  /// Generate random size (100 ~ 350 range)
   double _randomSize() {
     return 100.0 + _random.nextDouble() * 250.0;
   }
 
-  /// 랜덤 작은 크기 생성 (20 ~ 60 범위)
+  /// Generate random small size (20 ~ 60 range)
   double _randomSmallSize() {
     return 20.0 + _random.nextDouble() * 40.0;
   }
 
-  /// 랜덤 회전 생성 (0 ~ 2π 범위)
+  /// Generate random rotation (0 ~ 2π range)
   double _randomRotation() {
     return _random.nextDouble() * 2 * math.pi;
   }
 }
 
-/// 블롭 정보를 저장하는 클래스
+/// Class for storing blob information
 class _BlobInfo {
   final Color color;
   final double size;
@@ -146,21 +146,21 @@ class _BlobInfo {
   });
 }
 
-/// 블롭 스타일의 레이어 구현체
+/// Implementation of blob style layer
 class BlobStyleLayer extends AuraStyleLayer {
-  /// 애니메이션 상태 값 (0.0 ~ 1.0)
+  /// Animation state value (0.0 ~ 1.0)
   final double animationValue;
 
-  /// 컨테이너 크기
+  /// Container size
   final Size containerSize;
 
-  /// 공유 설정 인스턴스
+  /// Shared configuration instance
   final _config = _BlobStyleConfig();
 
-  /// 블러 효과 사용 여부
+  /// Whether to use blur effect
   bool get _useBlurEffect => blurStrengthX > 0.0 || blurStrengthY > 0.0;
 
-  /// 생성자
+  /// Constructor
   BlobStyleLayer({
     required super.colorPalette,
     required super.animationController,
@@ -174,37 +174,37 @@ class BlobStyleLayer extends AuraStyleLayer {
     this.containerSize = Size.zero,
   });
 
-  /// 버라이어티 값에 따른 실제 블롭 개수 계산
+  /// Calculate effective blob count based on variety value
   int get _effectiveBlobCount {
     final minCount = 5;
     final maxCount = _BlobStyleConfig.maxBlobCount;
     return minCount + ((maxCount - minCount) * variety).round();
   }
 
-  /// 버라이어티 값에 따른 실제 작은 블롭 개수 계산
+  /// Calculate effective small blob count based on variety value
   int get _effectiveSmallBlobCount {
     final minCount = 10;
     final maxCount = _BlobStyleConfig.maxSmallBlobCount;
     return minCount + ((maxCount - minCount) * variety).round();
   }
 
-  /// 애니메이션 값에 따른 펄스 스케일 계산
+  /// Calculate pulse scale based on animation value
   double _calculatePulseScale(int index) {
-    // 기본 스케일 (0.99 ~ 1.01)
+    // Base scale (0.99 ~ 1.01)
     final baseScale = 0.99 + (0.02 * animationValue);
 
-    // 각 블롭마다 약간 다른 스케일 적용
+    // Apply slightly different scale for each blob
     final randomOffset = (index % 5) * 0.002 * animationValue;
 
     return baseScale + randomOffset;
   }
 
-  /// 애니메이션 값에 따른 이동 오프셋 계산
+  /// Calculate movement offset based on animation value
   Offset _calculateMovementOffset(Offset vector, int index) {
-    // 각 블롭마다 약간 다른 진행 속도 적용
+    // Apply slightly different speed for each blob
     final progress = (animationValue + (index % 7) * 0.1) % 1.0;
 
-    // 사인 곡선을 사용하여 부드러운 왕복 움직임 구현
+    // Use sine curve for smooth back-and-forth movement
     final factor = math.sin(progress * math.pi) * animationValue;
 
     return Offset(vector.dx * factor, vector.dy * factor);
@@ -212,16 +212,16 @@ class BlobStyleLayer extends AuraStyleLayer {
 
   @override
   Widget build(BuildContext context) {
-    // 부모 클래스의 build 메서드 사용
+    // Use parent class build method
     return super.build(context);
   }
 
   @override
   Widget buildBackgroundLayer() {
-    // 색상 특성에 따른 배경 설정 가져오기
+    // Get background settings based on color characteristic
     final settings = getBackgroundSettingsForCharacteristic();
 
-    // 배경 색상 선택 (밝은 색상과 주요 색상의 혼합)
+    // Select background color (mix of light color and primary color)
     final backgroundColor1 = Color.lerp(
         colorPalette.light,
         colorPalette.primary.withOpacity(settings.primaryOpacity),
@@ -232,7 +232,7 @@ class BlobStyleLayer extends AuraStyleLayer {
         colorPalette.secondary.withOpacity(settings.secondaryOpacity),
         math.max(0.0, 0.9 - settings.lightColorWeight))!;
 
-    // 배경 그라데이션 생성
+    // Create background gradient
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -251,14 +251,14 @@ class BlobStyleLayer extends AuraStyleLayer {
 
   @override
   Widget buildBlurLayer() {
-    // 블러 강도가 0.0인 경우 블러 효과를 적용하지 않음
+    // Don't apply blur effect if blur strength is 0.0
     if (!_useBlurEffect) {
       return Container(
         color: Colors.black.withOpacity(blurLayerOpacity),
       );
     }
 
-    // 일반적인 블러 효과 적용
+    // Apply normal blur effect
     return BackdropFilter(
       filter: ui.ImageFilter.blur(
         sigmaX: blurStrengthX,
@@ -272,21 +272,21 @@ class BlobStyleLayer extends AuraStyleLayer {
 
   @override
   Widget buildAuraLayer() {
-    // animationValue가 0이면 빈 컨테이너 반환
+    // Return empty container if animation value is 0
     if (animationValue <= 0.01) {
       return Container();
     }
 
-    // 컨테이너 크기가 유효한지 확인
+    // Check if container size is valid
     final hasValidSize = containerSize.width > 0 && containerSize.height > 0;
     if (!hasValidSize) {
       return Container();
     }
 
-    // 모든 블롭 정보를 생성하고 크기에 따라 정렬 (작은 것부터)
+    // Generate all blob information and sort by size (small to large)
     List<_BlobInfo> allBlobs = [];
 
-    // 메인 블롭 추가
+    // Add main blob
     // allBlobs.add(_BlobInfo(
     //   color: colorPalette.primary,
     //   size: math.min(containerSize.width, containerSize.height) *
@@ -298,11 +298,11 @@ class BlobStyleLayer extends AuraStyleLayer {
     //   index: 0,
     // ));
 
-    // 버라이어티 값에 따른 실제 블롭 개수 계산
+    // Calculate actual blob count based on variety value
     final blobCount = _effectiveBlobCount;
     final smallBlobCount = _effectiveSmallBlobCount;
 
-    // 일반 블롭 추가
+    // Add regular blobs
     for (int index = 0; index < blobCount; index++) {
       Color color;
       switch (index % 4) {
@@ -334,7 +334,7 @@ class BlobStyleLayer extends AuraStyleLayer {
       ));
     }
 
-    // 작은 블롭 추가
+    // Add small blobs
     for (int index = 0; index < smallBlobCount; index++) {
       final colors = [
         colorPalette.light,
@@ -358,52 +358,52 @@ class BlobStyleLayer extends AuraStyleLayer {
       ));
     }
 
-    // 크기에 따라 정렬 (작은 것부터 큰 것 순으로)
+    // Sort by size (small to large)
     allBlobs.sort((a, b) => a.size.compareTo(b.size));
 
     return ClipRect(
       child: Stack(
         fit: StackFit.expand,
         children: allBlobs.map((blob) {
-          // 블롭 크기에 따른 블러 강도 계산
+          // Calculate blur strength based on blob size
           final maxSize =
               math.min(containerSize.width, containerSize.height) * 0.6;
           final sizeRatio = blob.size / maxSize;
 
-          // 블러 강도 계산 - 정말 작은 블롭에만 블러 적용 (기본값)
+          // Calculate blur factor - only apply blur to very small blobs (default)
           double blurFactor;
           if (sizeRatio < 0.15) {
-            // 아주 작은 블롭 (크기 비율 15% 미만) - 강한 블러 적용
+            // Very small blobs (size ratio < 15%) - strong blur
             blurFactor = 0.5;
           } else if (sizeRatio < 0.25) {
-            // 작은 블롭 (크기 비율 15%~25%) - 약한 블러 적용
+            // Small blobs (size ratio 15%~25%) - weak blur
             blurFactor = 0.2;
           } else {
-            // 중간~큰 블롭 (크기 비율 25% 이상) - 기본적으로 블러 없음
+            // Medium to large blobs (size ratio >= 25%) - no blur by default
             blurFactor = 0.0;
           }
 
-          // 사용자가 블러 강도를 설정한 경우 추가 블러 적용
+          // Apply additional blur if user has set blur strength
           if (_useBlurEffect) {
-            // 블러 강도에 따른 추가 블러 적용 로직 (최대 강도를 낮춤)
+            // Logic for applying additional blur based on strength (reduced maximum intensity)
             final blurStrengthRatio = math.max(blurStrengthX, blurStrengthY) /
-                20.0; // 0.0 ~ 0.5 범위로 정규화
+                20.0; // Normalize to 0.0 ~ 0.5 range
 
             if (blurStrengthRatio > 0.1) {
-              // 블러 강도가 중간 이상인 경우
+              // For medium or higher blur strength
               if (sizeRatio < 0.4) {
-                // 작은~중간 블롭에 추가 블러 적용 (강도 감소)
+                // Apply additional blur to small-medium blobs (reduced intensity)
                 blurFactor = math.max(
                     blurFactor, (1.0 - sizeRatio) * 0.3 * blurStrengthRatio);
               } else if (blurStrengthRatio > 0.3) {
-                // 블러 강도가 높고 큰 블롭인 경우에도 매우 약한 블러 적용
+                // For high blur strength, apply very slight blur to large blobs too
                 blurFactor = math.max(blurFactor, 0.05 * blurStrengthRatio);
               }
             }
 
-            // 블러 강도가 최대치에 가까울 때 모든 블롭에 약한 블러 적용
+            // When blur strength is near maximum, apply slight blur to all blobs
             if (blurStrengthRatio > 0.4) {
-              // 크기에 반비례하는 블러 강도 적용 (작을수록 강한 블러, 전체적으로 강도 감소)
+              // Apply blur strength inversely proportional to size (smaller = stronger blur, overall reduced intensity)
               final maxBlurFactor = 0.1 + (1.0 - sizeRatio) * 0.4;
               blurFactor =
                   math.max(blurFactor, maxBlurFactor * blurStrengthRatio);
@@ -419,14 +419,14 @@ class BlobStyleLayer extends AuraStyleLayer {
             offset: blob.offset,
             rotation: blob.rotation,
             index: blob.index,
-            blurFactor: blurFactor, // 크기에 따른 블러 강도 전달
+            blurFactor: blurFactor, // Pass blur factor based on size
           );
         }).toList(),
       ),
     );
   }
 
-  /// 아우라 블롭 위젯 생성
+  /// Create aura blob widget
   Widget _buildAuraBlob({
     required double scale,
     required Offset movementOffset,
@@ -435,44 +435,44 @@ class BlobStyleLayer extends AuraStyleLayer {
     required Offset offset,
     required double rotation,
     required int index,
-    required double blurFactor, // 블러 강도 계수 추가
+    required double blurFactor, // Added blur factor parameter
   }) {
-    // 애니메이션 값이 0이면 빈 컨테이너 반환
+    // Return empty container if animation value is 0
     if (animationValue <= 0.01) {
       return Container();
     }
 
-    // 기본 위치 계산
+    // Calculate base position
     return Positioned.fill(
       child: Center(
         child: Builder(
           builder: (context) {
-            // 컨테이너 크기 사용
+            // Use container size
             final screenSize = containerSize;
 
-            // 화면 크기가 유효한지 확인
+            // Check if screen size is valid
             final hasValidSize = screenSize.width > 0 && screenSize.height > 0;
             if (!hasValidSize) {
-              return Container(); // 유효한 크기가 없으면 빈 컨테이너 반환
+              return Container(); // Return empty container if size is invalid
             }
 
-            // 기본 위치 계산 (컨테이너 내부로 제한)
+            // Calculate base position (constrained within container)
             final baseOffset = Offset(
               screenSize.width * offset.dx,
               screenSize.height * offset.dy,
             );
 
-            // 최종 위치 계산
+            // Calculate final position
             final finalOffset = baseOffset + movementOffset;
 
-            // 스케일이 유효한지 확인 (0이 아닌지)
+            // Check if scale is valid (not zero)
             final validScale = scale.isFinite && scale != 0;
 
-            // 블롭 위젯 생성 - 블러 강도에 따라 스타일 결정
+            // Create blob widget - style determined by blur factor
             Widget blobWidget;
 
             if (blurFactor <= 0.01) {
-              // 블러 없는 블롭 (중간~큰 블롭)
+              // Blob without blur (medium to large blobs)
               blobWidget = Container(
                 width: size,
                 height: size,
@@ -482,13 +482,13 @@ class BlobStyleLayer extends AuraStyleLayer {
                 ),
               );
             } else {
-              // 블러 있는 블롭 (작은 블롭 또는 블러 강도가 높은 경우)
+              // Blob with blur (small blobs or high blur strength)
               final isSmallBlob = size /
                       (math.min(containerSize.width, containerSize.height) *
                           0.6) <
                   0.25;
 
-              // 작은 블롭은 그라데이션, 큰 블롭은 단색으로 처리
+              // Small blobs use gradient, large blobs use solid color
               if (isSmallBlob) {
                 blobWidget = Container(
                   width: size,
@@ -518,8 +518,9 @@ class BlobStyleLayer extends AuraStyleLayer {
                 );
               }
 
-              // 블러 효과 적용 (강도 감소)
-              final baseBlur = math.min(1.5, blurFactor * 1.5); // 기본 블러 강도 감소
+              // Apply blur effect (reduced intensity)
+              final baseBlur =
+                  math.min(1.5, blurFactor * 1.5); // Reduce base blur intensity
               final adjustedBlurX = _useBlurEffect
                   ? math.min(
                       3.0, math.max(baseBlur, blurStrengthX * blurFactor * 0.3))
@@ -543,7 +544,8 @@ class BlobStyleLayer extends AuraStyleLayer {
               child: Transform.rotate(
                 angle: rotation,
                 child: Transform.scale(
-                  scale: validScale ? scale : 1.0, // 유효하지 않은 스케일 값 처리
+                  scale:
+                      validScale ? scale : 1.0, // Handle invalid scale values
                   child: blobWidget,
                 ),
               ),
