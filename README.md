@@ -2,7 +2,10 @@
 
 # Adaptive Aura
 <p align="center">
-<img src="screenshots/adaptive_aura_title.jpeg" width="800" alt="Adaptive Aura"/>
+<picture>
+  <source media="(max-width: 0px)" srcset="https://raw.githubusercontent.com/yourusername/adaptive_aura/main/screenshots/adaptive_aura_title.jpeg">
+  <img src="screenshots/adaptive_aura_title.jpeg" width="800" alt="Adaptive Aura">
+</picture>
 </p>
 Adaptive Aura is a versatile Flutter package that creates beautiful, dynamic background effects that adapt to the colors of your images or custom color palettes. It provides an elegant container component that automatically extracts colors from images and applies visually striking aura effects, perfect for music players, image galleries, or any app that needs a touch of visual elegance.
 
@@ -17,9 +20,18 @@ Adaptive Aura is a versatile Flutter package that creates beautiful, dynamic bac
 ## Gradient Style
 A soft, flowing gradient effect inspired by Apple Music's design language, creating a subtle yet captivating background.
 <p align="center">
-<img src="screenshots/gradient_car.jpeg" width="250" alt="Gradient Car"/>
-<img src="screenshots/gradient_music.jpeg" width="250" alt="Gradient Music"/>
-<img src="screenshots/gradient_watch.jpeg" width="250" alt="Gradient Watch"/>
+<picture>
+  <source media="(max-width: 0px)" srcset="https://raw.githubusercontent.com/yourusername/adaptive_aura/main/screenshots/gradient_car.jpeg">
+  <img src="screenshots/gradient_car.jpeg" width="250" alt="Gradient Car">
+</picture>
+<picture>
+  <source media="(max-width: 0px)" srcset="https://raw.githubusercontent.com/yourusername/adaptive_aura/main/screenshots/gradient_music.jpeg">
+  <img src="screenshots/gradient_music.jpeg" width="250" alt="Gradient Music">
+</picture>
+<picture>
+  <source media="(max-width: 0px)" srcset="https://raw.githubusercontent.com/yourusername/adaptive_aura/main/screenshots/gradient_watch.jpeg">
+  <img src="screenshots/gradient_watch.jpeg" width="250" alt="Gradient Watch">
+</picture>
 </p>
 
 
