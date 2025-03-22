@@ -1,6 +1,6 @@
 name: adaptive_aura
 description: "A Flutter package for creating beautiful, dynamic aura effects that adapt to the color of images."
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/dc143cDev/flutter_adaptive_aura
 repository: https://github.com/dc143cDev/flutter_adaptive_aura
 environment:
