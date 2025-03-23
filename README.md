@@ -45,7 +45,13 @@ Add this to your package's pubspec.yaml file:
 
 ~~~
 dependencies:
-  adaptive_aura: ^0.0.1
+  adaptive_aura: ^0.0.4
+~~~
+
+or
+
+~~~
+$ flutter pub add adaptive_aura
 ~~~
 
 # Usage

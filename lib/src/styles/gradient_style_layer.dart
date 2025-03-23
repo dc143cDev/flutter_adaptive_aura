@@ -152,13 +152,6 @@ class GradientStyleLayer extends AuraStyleLayer {
     return 2 + (4 * variety).round(); // 2 ~ 6 points (count reduced by half)
   }
 
-  /// Generate cache key (rounding animation value to 0.1 units)
-  String _getCacheKey() {
-    // Create cache key by rounding animation value to 0.1 units
-    final roundedAnimValue = (animationValue * 10).round() / 10;
-    return "${containerSize.width}x${containerSize.height}_${variety}_${roundedAnimValue}";
-  }
-
   /// Generate gradient points
   List<_GradientPoint> _generateGradientPoints() {
     final points = <_GradientPoint>[];

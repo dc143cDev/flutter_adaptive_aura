@@ -249,7 +249,7 @@ abstract class AuraStyleLayer extends StatelessWidget {
 
     switch (colorCharacteristic) {
       case AuraColorCharacteristic.VIVID:
-        // Vivid series: Much brighter
+        // Vivid color series: Much brighter
         lightColorWeight = 0.85 + (colorBrightness * 0.15);
         primaryOpacity = 0.2;
         secondaryOpacity = 0.15;
@@ -281,7 +281,6 @@ abstract class AuraStyleLayer extends StatelessWidget {
         backgroundOpacity2 = 0.4;
         break;
       case AuraColorCharacteristic.MEDIUM:
-      default:
         // Medium tone series: Medium level
         lightColorWeight =
             0.5 + (colorBrightness * 0.3) + (colorVividness * 0.2);
