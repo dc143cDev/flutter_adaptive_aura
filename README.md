@@ -45,7 +45,7 @@ Add this to your package's pubspec.yaml file:
 
 ~~~
 dependencies:
-  adaptive_aura: ^0.0.4
+  adaptive_aura: ^0.0.5
 ~~~
 
 or

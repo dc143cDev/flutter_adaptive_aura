@@ -233,7 +233,6 @@ class _SunrayPainter extends CustomPainter {
         break;
 
       case AuraColorCharacteristic.MEDIUM:
-      default:
         // Medium tone theme: Brighter adjustment
         colors.add(colorPalette.primary);
         colors.add(colorPalette.secondary);

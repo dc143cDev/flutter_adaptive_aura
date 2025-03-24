@@ -256,7 +256,6 @@ class GradientStyleLayer extends AuraStyleLayer {
           break;
 
         case AuraColorCharacteristic.MEDIUM:
-        default:
           // Medium tone theme: Balanced color composition
           colors.add(colorPalette.primary);
           colors.add(colorPalette.secondary);
@@ -334,7 +333,6 @@ class GradientStyleLayer extends AuraStyleLayer {
             break;
 
           case AuraColorCharacteristic.MEDIUM:
-          default:
             // Medium tone theme: Variety determines color selection diversity
             if (_random.nextDouble() < variety * 0.8) {
               // Higher variety increases chance of using diverse colors
@@ -384,7 +382,6 @@ class GradientStyleLayer extends AuraStyleLayer {
             opacity = 0.2 + _random.nextDouble() * 0.15; // Maintain opacity
             break;
           case AuraColorCharacteristic.MEDIUM:
-          default:
             // Medium tone theme: Slightly brighten
             gradientColor = Color.lerp(baseColor, colorPalette.light,
                 0.1 + _random.nextDouble() * 0.2)!;
@@ -484,7 +481,6 @@ class GradientStyleLayer extends AuraStyleLayer {
             Color.lerp(colorPalette.primary, colorPalette.light, 0.5)!;
         break;
       case AuraColorCharacteristic.MEDIUM:
-      default:
         // Medium tone theme: Medium gradient, medium opacity
         size = containerSize.width * 1.6 * sizeMultiplier; // Maintain size
         opacity = 0.35 * animationValue; // Maintain opacity
@@ -589,7 +585,6 @@ class GradientStyleLayer extends AuraStyleLayer {
         opacityMultiplier = 0.4;
         break;
       case AuraColorCharacteristic.MEDIUM:
-      default:
         // Medium tone theme: Medium blur, medium opacity
         blurStrength = math.max(1.0, blurStrengthX / 2);
         opacityMultiplier = 0.5;
@@ -677,7 +672,6 @@ class _GradientPainter extends CustomPainter {
         blendMode = variety > 0.3 ? BlendMode.softLight : BlendMode.srcOver;
         break;
       case AuraColorCharacteristic.MEDIUM:
-      default:
         blendMode = variety > 0.3 ? BlendMode.softLight : BlendMode.srcOver;
         break;
     }
@@ -760,7 +754,6 @@ class _GradientPainter extends CustomPainter {
           mediumBlendMode = BlendMode.softLight;
           break;
         case AuraColorCharacteristic.MEDIUM:
-        default:
           mediumBlendMode = BlendMode.softLight;
           break;
       }
@@ -799,7 +792,6 @@ class _GradientPainter extends CustomPainter {
           smallBlendMode = BlendMode.softLight;
           break;
         case AuraColorCharacteristic.MEDIUM:
-        default:
           smallBlendMode = BlendMode.softLight;
           break;
       }
